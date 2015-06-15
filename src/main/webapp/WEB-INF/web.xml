@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+
+    <servlet>
+        <servlet-name>CoinsecretIndex</servlet-name>
+        <servlet-class>io.geobit.opreturn.CoinSecretIndex</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>CoinSecretIndexCaller</servlet-name>
+        <servlet-class>io.geobit.opreturn.CoinSecretIndexCaller</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>CoinsecretDayStatsBuilder</servlet-name>
+        <servlet-class>io.geobit.opreturn.DayStatsBuilder</servlet-class>
+    </servlet>
+
+
+    <servlet>
+        <servlet-name>CoinsecretDayStatsBuilderCaller</servlet-name>
+        <servlet-class>io.geobit.opreturn.DayStatsBuilderCaller</servlet-class>
+    </servlet>
+
+
+    <servlet>
+        <servlet-name>CoinsecretStatsToJSONDataTable</servlet-name>
+        <servlet-class>io.geobit.opreturn.StatsToJSONDataTable</servlet-class>
+    </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>CoinsecretStatsToJSONDataTable</servlet-name>
+        <url-pattern>/v1/coinsecret/stats</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CoinsecretDayStatsBuilderCaller</servlet-name>
+        <url-pattern>/v1/coinsecret/build-caller</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CoinsecretDayStatsBuilder</servlet-name>
+        <url-pattern>/v1/coinsecret/build</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CoinSecretIndexCaller</servlet-name>
+        <url-pattern>/v1/coinsecret/index-caller</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CoinsecretIndex</servlet-name>
+        <url-pattern>/v1/coinsecret/index</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+    <filter>
+        <filter-name>ObjectifyFilter</filter-name>
+        <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ObjectifyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+</web-app>

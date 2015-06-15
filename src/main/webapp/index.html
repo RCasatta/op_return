@@ -1,0 +1,90 @@
+<html>
+<head>
+    <script type="text/css">
+        body {
+            margin-top: 40px;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            margin-left: 40px;
+	    }
+    </script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var jsonData = $.ajax({
+          url: "/v1/coinsecret/stats",
+          dataType:"json",
+          async: false
+          }).responseText;
+      var json = JSON.parse(jsonData);
+
+      // Create our data table out of JSON data loaded from server.
+      var data = new google.visualization.DataTable(json.total);
+
+        var options = {
+          title: 'Total transactions with OP_RETURN ',
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('total_div'));
+        chart.draw(data, options);
+
+// Create our data table out of JSON data loaded from server.
+      var data2 = new google.visualization.DataTable(json.proto);
+
+        var options2 = {
+          title: 'Most used protocol',
+          isStacked: true,
+          vAxis: {minValue: 0}
+        };
+
+        var chart2 = new google.visualization.AreaChart(document.getElementById('proto_div'));
+        chart2.draw(data2, options2);
+
+
+           // Create our data table out of JSON data loaded from server.
+      var data5 = new google.visualization.DataTable(json.cumulative);
+
+        var options5 = {
+          title: 'By protocol cumulative',
+
+          vAxis: {minValue: 0}
+        };
+
+        var chart5 = new google.visualization.PieChart(document.getElementById('cumulative_div'));
+        chart5.draw(data5, options5);
+      }
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-49520175-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+<h1>OP_RETURN stats</h1>
+<p>Show statistics on the usage of the Bitcoin script OP_RETURN by analyzing the first 3 bytes in its content</p>
+<ul>
+    <li>Github <a href="https://github.com/RCasatta/opreturn">sources</a></li>
+    <li>Using <a href="http://coinsecrets.org/">coinsecret</a> and <a href="https://blockr.io/">blockr</a> API</li>
+    <li>Made by <a href="https://twitter.com/RCasatta">@RCasatta</a></li>
+
+</ul>
+<div id="total_div" style="width: 100%; height: 500px;"></div>
+<div id="proto_div" style="width: 100%; height: 1000px;"></div>
+<div id="cumulative_div" style="width: 100%; height: 500px;"></div>
+
+
+</body>
+</html>
