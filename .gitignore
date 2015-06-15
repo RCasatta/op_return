@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 build/
+=======
+# Google App Engine generated folder
+appengine-generated/
+>>>>>>> e9d428ed0efac1fc493bdbfbf3a14e3ab8f65dcc
