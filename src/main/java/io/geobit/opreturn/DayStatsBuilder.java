@@ -85,6 +85,7 @@ public class DayStatsBuilder extends HttpServlet {
                                     final String key = ascii.substring(0, 6);
                                     final int count = hexCounters.containsKey(key) ? hexCounters.get(key) : 0;
                                     hexCounters.put(key, count + 1);
+
                                 }
                             }
 

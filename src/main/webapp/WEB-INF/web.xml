@@ -28,6 +28,16 @@
         <servlet-class>io.geobit.opreturn.StatsToJSONDataTable</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>CoinsecretIterate</servlet-name>
+        <servlet-class>io.geobit.opreturn.CoinsecretIterate</servlet-class>
+    </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>CoinsecretIterate</servlet-name>
+        <url-pattern>/v1/coinsecret/iterate</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>CoinsecretStatsToJSONDataTable</servlet-name>

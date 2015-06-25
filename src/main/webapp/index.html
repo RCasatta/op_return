@@ -11,54 +11,61 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript">
-      google.load("visualization", "1", {packages:["corechart"]});
+      google.load("visualization", "1.0", {packages:["corechart"]});
 
       // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawChart);
 
     function drawChart() {
-      var jsonData = $.ajax({
+        var jsonData = $.ajax({
           url: "/v1/coinsecret/stats",
           dataType:"json",
           async: false
           }).responseText;
-      var json = JSON.parse(jsonData);
+        var json = JSON.parse(jsonData);
 
-      // Create our data table out of JSON data loaded from server.
-      var data = new google.visualization.DataTable(json.total);
-
+        // Create our data table out of JSON data loaded from server.
+        var data = new google.visualization.DataTable(json.total);
         var options = {
           title: 'Total transactions with OP_RETURN ',
           vAxis: {minValue: 0}
         };
-
         var chart = new google.visualization.AreaChart(document.getElementById('total_div'));
         chart.draw(data, options);
 
-// Create our data table out of JSON data loaded from server.
-      var data2 = new google.visualization.DataTable(json.proto);
 
+        // Create our data table out of JSON data loaded from server.
+        var data2 = new google.visualization.DataTable(json.proto);
         var options2 = {
-          title: 'Most used protocol',
+          title: 'Most used protocols',
+          subtitle: 'Showing protocols with more than 500 txs',
           isStacked: true,
           vAxis: {minValue: 0}
         };
-
         var chart2 = new google.visualization.AreaChart(document.getElementById('proto_div'));
         chart2.draw(data2, options2);
 
 
-           // Create our data table out of JSON data loaded from server.
-      var data5 = new google.visualization.DataTable(json.cumulative);
-
+        // Create our data table out of JSON data loaded from server.
+        var data5 = new google.visualization.DataTable(json.cumulative);
         var options5 = {
           title: 'By protocol cumulative',
-
+          subtitle: 'Showing protocols with more than 100 txs',
           vAxis: {minValue: 0}
         };
-
         var chart5 = new google.visualization.PieChart(document.getElementById('cumulative_div'));
         chart5.draw(data5, options5);
+
+
+        // Create our data table out of JSON data loaded from server.
+        var data6 = new google.visualization.DataTable(json.week);
+        var options6 = {
+          title: 'By protocol last week',
+          subtitle: 'Showing protocols with more than 10 txs',
+          vAxis: {minValue: 0}
+        };
+        var chart6 = new google.visualization.PieChart(document.getElementById('week_div'));
+        chart6.draw(data6, options6);
       }
     </script>
     <script>
@@ -84,6 +91,7 @@
 <div id="total_div" style="width: 100%; height: 500px;"></div>
 <div id="proto_div" style="width: 100%; height: 1000px;"></div>
 <div id="cumulative_div" style="width: 100%; height: 500px;"></div>
+<div id="week_div" style="width: 100%; height: 500px;"></div>
 
 
 </body>

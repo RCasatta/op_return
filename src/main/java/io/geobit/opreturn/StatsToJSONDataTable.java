@@ -81,6 +81,12 @@ public class StatsToJSONDataTable extends HttpServlet {
                 total.put("cols", totalCols);
 
                 final Map<String, Integer> counters = new HashMap<>();
+                final Map<String, Integer> lastWeekCounters = new HashMap<>();
+
+                int size=coinSecretGroupedList.size();
+                int lastWeek=size-7;
+                log.info("total CoinSecretGrouped " + size);
+                int cont=0;
 
                 for (CoinSecretGrouped coinSecretGrouped : coinSecretGroupedList) {
                     String data = coinSecretGrouped.getDay();
@@ -107,9 +113,16 @@ public class StatsToJSONDataTable extends HttpServlet {
                         while (keys.hasNext()) {
                             final String hex = (String) keys.next();
                             int count = counters.containsKey(hex) ? counters.get(hex) : 0;
-                            counters.put(hex, count + jsonObject.getInt(hex));
+                            final int anInt = jsonObject.getInt(hex);
+                            counters.put(hex, count + anInt);
+                            if(cont>lastWeek) {
+                                int countW = lastWeekCounters.containsKey(hex) ? lastWeekCounters.get(hex) : 0;
+                                lastWeekCounters.put(hex, countW + anInt);
+                            }
                         }
+
                     }
+                    cont++;
                 }
                 total.put("rows", totalRows);
 
@@ -117,12 +130,22 @@ public class StatsToJSONDataTable extends HttpServlet {
                 final Map<String, Integer> moreThanYCounters = new HashMap<>();
 
                 for (Map.Entry<String, Integer> entry : counters.entrySet()) {
-                    if (entry.getValue() > 400)
+                    if (entry.getValue() > 500)
                         moreThanXCounters.put(entry.getKey(), entry.getValue());
-                    if (entry.getValue() > 50)
+                    if (entry.getValue() > 100)
                         moreThanYCounters.put(entry.getKey(), entry.getValue());
                 }
-                log.info("counters.size()=" + counters.size() + " moreThanXCounters.size()=" + moreThanXCounters.size());
+
+                final Map<String, Integer> moreThanXLastWeekCounters = new HashMap<>();
+
+                for (Map.Entry<String, Integer> entry : lastWeekCounters.entrySet()) {
+                    if (entry.getValue() > 10)
+                        moreThanXLastWeekCounters.put(entry.getKey(), entry.getValue());
+                }
+
+                log.info("counters.size()=" + counters.size() + "\nmoreThanXCounters.size()=" + moreThanXCounters.size() +
+                        "\nmoreThanYCounters.size()=" + moreThanYCounters.size() + "\nlastWeekCounters.size()=" + lastWeekCounters.size() +
+                        "\nmoreThanXLastWeekCounters.size()=" + moreThanXLastWeekCounters.size());
 
 
                 JSONObject byProto = new JSONObject();
@@ -208,10 +231,42 @@ public class StatsToJSONDataTable extends HttpServlet {
                 cumulative.put("rows", cumulativeRows);
 
 
+                JSONObject week = new JSONObject();
+                JSONArray weekCols = new JSONArray();
+                JSONArray weekRows = new JSONArray();
+                JSONObject weekCol0 = new JSONObject();
+                JSONObject weekCol1 = new JSONObject();
+                weekCol0.put("id", "x");
+                weekCol1.put("id", "A");
+                weekCol0.put("label", "names");
+                weekCol1.put("label", "values");
+                weekCol0.put("type", "string");
+                weekCol1.put("type", "number");
+                weekCols.put(weekCol0);
+                weekCols.put(weekCol1);
+                week.put("cols", weekCols);
+                for (Map.Entry<String, Integer> entry : moreThanXLastWeekCounters.entrySet()) {
+                    JSONObject weekC = new JSONObject();
+                    JSONArray weekCArr = new JSONArray();
+                    JSONObject weekV0 = new JSONObject();
+                    JSONObject weekV1 = new JSONObject();
+
+                    weekV0.put("v", hexKeyToDesc(entry.getKey()));
+                    weekV1.put("v", entry.getValue());
+                    weekCArr.put(weekV0);
+                    weekCArr.put(weekV1);
+                    weekC.put("c", weekCArr);
+                    weekRows.put(weekC);
+                }
+                week.put("rows", weekRows);
+
+
                 dataTable.put("total", total);
                 dataTable.put("cumulative", cumulative);
                 dataTable.put("proto", byProto);
-                dataTable.put("counters", new JSONObject(moreThanXCounters));
+                //dataTable.put("counters", new JSONObject(moreThanXCounters));
+                dataTable.put("week", week);
+
 
 
                 result = dataTable.toString();
