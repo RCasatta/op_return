@@ -46,8 +46,9 @@ public class StatsToJSONDataTable extends HttpServlet {
         map.put("DOC", "Docproof");
         map.put("FAC", "Factom");
         map.put("SPK", "Coinspark");
-        map.put(new String(fromHex("4f4101")) , "OpenAsset");
+        map.put(new String(fromHex("4f4101")) , "Open Assets");
         map.put("ASC", "Ascribe pool");
+        map.put("EW ", "Eternity Wall");
     }
 
     @Override
