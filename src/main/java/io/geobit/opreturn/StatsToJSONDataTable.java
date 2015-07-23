@@ -47,6 +47,7 @@ public class StatsToJSONDataTable extends HttpServlet {
         map.put("FAC", "Factom");
         map.put("SPK", "Coinspark");
         map.put(new String(fromHex("4f4101")) , "Open Assets");
+        map.put(new String(fromHex("434301")) , "Colu");
         map.put("ASC", "Ascribe pool");
         map.put("EW ", "Eternity Wall");
     }
@@ -131,16 +132,16 @@ public class StatsToJSONDataTable extends HttpServlet {
                 final Map<String, Integer> moreThanYCounters = new HashMap<>();
 
                 for (Map.Entry<String, Integer> entry : counters.entrySet()) {
-                    if (entry.getValue() > 500)
+                    if (entry.getValue() > 600)
                         moreThanXCounters.put(entry.getKey(), entry.getValue());
-                    if (entry.getValue() > 100)
+                    if (entry.getValue() > 300)
                         moreThanYCounters.put(entry.getKey(), entry.getValue());
                 }
 
                 final Map<String, Integer> moreThanXLastWeekCounters = new HashMap<>();
 
                 for (Map.Entry<String, Integer> entry : lastWeekCounters.entrySet()) {
-                    if (entry.getValue() > 10)
+                    if (entry.getValue() > 30)
                         moreThanXLastWeekCounters.put(entry.getKey(), entry.getValue());
                 }
 
