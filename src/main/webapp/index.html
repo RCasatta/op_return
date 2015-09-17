@@ -28,7 +28,7 @@
         var data = new google.visualization.DataTable(json.total);
         var options = {
           title: 'Total transactions with OP_RETURN ',
-          vAxis: {minValue: 0}
+          vAxis: {logScale: true, minValue: 0}
         };
         var chart = new google.visualization.AreaChart(document.getElementById('total_div'));
         chart.draw(data, options);
@@ -40,7 +40,7 @@
           title: 'Most used protocols',
           subtitle: 'Showing protocols with more than 500 txs',
           isStacked: true,
-          vAxis: {minValue: 0}
+          vAxis: {logScale: true, minValue: 0}
         };
         var chart2 = new google.visualization.AreaChart(document.getElementById('proto_div'));
         chart2.draw(data2, options2);
@@ -101,6 +101,9 @@
     <li><a href="http://eternitywall.it">Eternity Wall</a></li>
     <li><a href="http://factom.org/">Factom</a></li>
     <li><a href="http://colu.co/">Colu</a></li>
+    <li><a href="http://monegraph.com/">Monegraph</a></li>
+    <li><a href="https://onename.com/">Onename</a> (first blockchain ID implementor)</li>
+    <li>Tweet to @RCasatta to report protocol not present here</li>
 </ul>
 
 </body>

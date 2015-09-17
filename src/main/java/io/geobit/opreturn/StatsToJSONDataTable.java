@@ -50,6 +50,10 @@ public class StatsToJSONDataTable extends HttpServlet {
         map.put(new String(fromHex("434301")) , "Colu");
         map.put("ASC", "Ascribe pool");
         map.put("EW ", "Eternity Wall");
+        map.put(new String(fromHex("4d4720")), "Monegraph");
+        map.put("id;", "blockchain ID");
+
+
     }
 
     @Override
