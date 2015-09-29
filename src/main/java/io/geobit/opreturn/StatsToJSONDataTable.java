@@ -50,8 +50,10 @@ public class StatsToJSONDataTable extends HttpServlet {
         map.put(new String(fromHex("434301")) , "Colu");
         map.put("ASC", "Ascribe pool");
         map.put("EW ", "Eternity Wall");
-        map.put(new String(fromHex("4d4720")), "Monegraph");
+        map.put(new String(fromHex("4d4700")), "Monegraph");
+        map.put(new String(fromHex("4d47ff")), "Monegraph");
         map.put("id;", "blockchain ID");
+        map.put("CNT", "Counterparty");
 
 
     }
@@ -227,7 +229,10 @@ public class StatsToJSONDataTable extends HttpServlet {
                     JSONObject cumulativeV0 = new JSONObject();
                     JSONObject cumulativeV1 = new JSONObject();
 
-                    cumulativeV0.put("v", hexKeyToDesc(entry.getKey()));
+
+                    final String key = entry.getKey();
+                    log.info(key + " maps to " + hexKeyToDesc(key));
+                    cumulativeV0.put("v", hexKeyToDesc(key));
                     cumulativeV1.put("v", entry.getValue());
                     cumulativeCArr.put(cumulativeV0);
                     cumulativeCArr.put(cumulativeV1);
