@@ -24,38 +24,43 @@ import javax.servlet.http.HttpServletResponse;
 
 import io.geobit.opreturn.entity.CoinSecretGrouped;
 
-
 /**
  * Created by Riccardo Casatta @RCasatta on 19/04/15.
  */
 public class StatsToJSONDataTable extends HttpServlet {
     private final static Logger log  = Logger.getLogger(StatsToJSONDataTable.class.getName());
     private final static Map<String,String> map= new HashMap<>();
+    private final static Map<String,String> hexGrouping= new HashMap<>();
     private MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
     private final static SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
 
     @Override
     public void init() throws ServletException {
         super.init();
-        initMap();
+        initMaps();
 
     }
 
-    private void initMap() {
+    private void initMaps() {
         map.put("BIT", "Bitproof");
         map.put("DOC", "Docproof");
-        map.put("FAC", "Factom");
+        map.put("FAC", "Factom");  //464143
         map.put("SPK", "Coinspark");
         map.put(new String(fromHex("4f4101")) , "Open Assets");
         map.put(new String(fromHex("434301")) , "Colu");
         map.put("ASC", "Ascribe pool");
-        map.put("EW ", "Eternity Wall");
+        map.put("EW ", "Eternity Wall");  //455720
         map.put(new String(fromHex("4d4700")), "Monegraph");
-        map.put(new String(fromHex("4d47ff")), "Monegraph");
-        map.put("id;", "blockchain ID");
+        map.put("id;", "blockchain ID");  //69643b
         map.put("CNT", "Counterparty");
-        map.put(new String(fromHex("466100")), "Factom");
 
+        hexGrouping.put("4d47ff", "4d4700");  // MG? -> MG?
+        hexGrouping.put("455741", "455720");  // EWA -> EW
+        hexGrouping.put("466100", "464143");  // Fa? -> FAC
+        hexGrouping.put("69642b", "69643b");  // id+ -> id;
+        hexGrouping.put("69643a", "69643b");  // id: -> id;
+        hexGrouping.put("69643f", "69643b");  // id? -> id;
+        hexGrouping.put("69643e", "69643b");  // id> -> id;
 
 
     }
@@ -122,12 +127,15 @@ public class StatsToJSONDataTable extends HttpServlet {
                         Iterator<?> keys = jsonObject.keys();
                         while (keys.hasNext()) {
                             final String hex = (String) keys.next();
-                            int count = counters.containsKey(hex) ? counters.get(hex) : 0;
+                            final String groupedHex = hexGrouping.get(hex)!=null ? hexGrouping.get(hex) : hex;
+                            //log.info(hex + " " + hexInString + " " + key );
+
+                            int count = counters.containsKey(groupedHex) ? counters.get(groupedHex) : 0;
                             final int anInt = jsonObject.getInt(hex);
-                            counters.put(hex, count + anInt);
+                            counters.put(groupedHex, count + anInt);
                             if(cont>lastWeek) {
-                                int countW = lastWeekCounters.containsKey(hex) ? lastWeekCounters.get(hex) : 0;
-                                lastWeekCounters.put(hex, countW + anInt);
+                                int countW = lastWeekCounters.containsKey(groupedHex) ? lastWeekCounters.get(groupedHex) : 0;
+                                lastWeekCounters.put(groupedHex, countW + anInt);
                             }
                         }
 
@@ -136,20 +144,23 @@ public class StatsToJSONDataTable extends HttpServlet {
                 }
                 total.put("rows", totalRows);
 
-                final Map<String, Integer> moreThanXCounters = new HashMap<>();
+
+
+
+                    final Map<String, Integer> moreThanXCounters = new HashMap<>();
                 final Map<String, Integer> moreThanYCounters = new HashMap<>();
 
                 for (Map.Entry<String, Integer> entry : counters.entrySet()) {
-                    if (entry.getValue() > 700)
+                    if (entry.getValue() > 1200)
                         moreThanXCounters.put(entry.getKey(), entry.getValue());
-                    if (entry.getValue() > 500)
+                    if (entry.getValue() > 1000)
                         moreThanYCounters.put(entry.getKey(), entry.getValue());
                 }
 
                 final Map<String, Integer> moreThanXLastWeekCounters = new HashMap<>();
 
                 for (Map.Entry<String, Integer> entry : lastWeekCounters.entrySet()) {
-                    if (entry.getValue() > 50)
+                    if (entry.getValue() > 100)
                         moreThanXLastWeekCounters.put(entry.getKey(), entry.getValue());
                 }
 
