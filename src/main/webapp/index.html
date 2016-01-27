@@ -1,110 +1,160 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
-    <style>
-        body {
-            margin-top: 40px;
-            margin-right: 40px;
-            margin-bottom: 40px;
-            margin-left: 40px;
-	    }
-    </style>
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript">
-      google.load("visualization", "1.0", {packages:["corechart"]});
+<style>
+  body {
+    padding-top: 70px;
+    padding-bottom: 70px;
+    margin: 40px 40px 40px 40px;
+  }
+  .bs-docs-nav {
+    margin-bottom: 0;
+    background-color: #fff;
+    border-bottom: 0;
+  }
+  .bs-docs-footer {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #99979c;
+    text-align: center;
+    background-color: #2a2730;
+  }
+  .bs-docs-footer-links {
+    padding-left: 0px;
+    margin-bottom: 0px;
+  }
+  .bs-docs-footer-links li {
+    display: inline-block;
+  }
+  .bs-docs-footer a {
+    color: #fff;
+  }
+  @media (min-width: 768px)
+    .bs-docs-footer {
+      text-align: left;
+    }
+  }
+</style>
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  google.load("visualization", "1.0", {packages:["corechart"]});
 
-      // Set a callback to run when the Google Visualization API is loaded.
-    google.setOnLoadCallback(drawChart);
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.setOnLoadCallback(drawChart);
 
-    function drawChart() {
-        var jsonData = $.ajax({
-          url: "/v1/coinsecret/stats",
-          dataType:"json",
-          async: false
-          }).responseText;
-        var json = JSON.parse(jsonData);
+  function drawChart() {
+    var jsonData = $.ajax({
+      url: "/v1/coinsecret/stats",
+      dataType:"json",
+      async: false
+      }).responseText;
+    var json = JSON.parse(jsonData);
 
-        // Create our data table out of JSON data loaded from server.
-        var data = new google.visualization.DataTable(json.total);
-        var options = {
-          title: 'Total transactions with OP_RETURN ',
-          vAxis: {logScale: true, minValue: 0}
-        };
-        var chart = new google.visualization.AreaChart(document.getElementById('total_div'));
-        chart.draw(data, options);
-
-
-        // Create our data table out of JSON data loaded from server.
-        var data2 = new google.visualization.DataTable(json.proto);
-        var options2 = {
-          title: 'Most used protocols',
-          subtitle: 'Showing protocols with more than 500 txs',
-          vAxis: {logScale: true, minValue: 0}
-        };
-        var chart2 = new google.visualization.AreaChart(document.getElementById('proto_div'));
-        chart2.draw(data2, options2);
+    // Create our data table out of JSON data loaded from server.
+    var data = new google.visualization.DataTable(json.total);
+    var options = {
+      title: 'Total transactions with OP_RETURN ',
+      vAxis: {logScale: true, minValue: 0}
+    };
+    var chart = new google.visualization.AreaChart(document.getElementById('total_div'));
+    chart.draw(data, options);
 
 
-        // Create our data table out of JSON data loaded from server.
-        var data5 = new google.visualization.DataTable(json.cumulative);
-        var options5 = {
-          title: 'By protocol cumulative',
-          subtitle: 'Showing protocols with more than 100 txs',
-          vAxis: {minValue: 0}
-        };
-        var chart5 = new google.visualization.PieChart(document.getElementById('cumulative_div'));
-        chart5.draw(data5, options5);
+    // Create our data table out of JSON data loaded from server.
+    var data2 = new google.visualization.DataTable(json.proto);
+    var options2 = {
+      title: 'Most used protocols',
+      subtitle: 'Showing protocols with more than 500 txs',
+      vAxis: {logScale: true, minValue: 0}
+    };
+    var chart2 = new google.visualization.AreaChart(document.getElementById('proto_div'));
+    chart2.draw(data2, options2);
 
 
-        // Create our data table out of JSON data loaded from server.
-        var data6 = new google.visualization.DataTable(json.week);
-        var options6 = {
-          title: 'By protocol last week',
-          subtitle: 'Showing protocols with more than 10 txs',
-          vAxis: {minValue: 0}
-        };
-        var chart6 = new google.visualization.PieChart(document.getElementById('week_div'));
-        chart6.draw(data6, options6);
-      }
-    </script>
-    <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    // Create our data table out of JSON data loaded from server.
+    var data5 = new google.visualization.DataTable(json.cumulative);
+    var options5 = {
+      title: 'By protocol cumulative',
+      subtitle: 'Showing protocols with more than 100 txs',
+      vAxis: {minValue: 0}
+    };
+    var chart5 = new google.visualization.PieChart(document.getElementById('cumulative_div'));
+    chart5.draw(data5, options5);
 
-  ga('create', 'UA-49520175-2', 'auto');
-  ga('send', 'pageview');
 
+    // Create our data table out of JSON data loaded from server.
+    var data6 = new google.visualization.DataTable(json.week);
+    var options6 = {
+      title: 'By protocol last week',
+      subtitle: 'Showing protocols with more than 10 txs',
+      vAxis: {minValue: 0}
+    };
+    var chart6 = new google.visualization.PieChart(document.getElementById('week_div'));
+    chart6.draw(data6, options6);
+  }
+});
+</script>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-49520175-2', 'auto');
+ga('send', 'pageview');
 </script>
 </head>
 <body>
-<h1>OP_RETURN stats</h1>
-<p>Show statistics on the usage of the Bitcoin script OP_RETURN by analyzing the first 3 bytes in its content</p>
-<ul>
-    <li>Github <a href="https://github.com/RCasatta/op_return">sources</a></li>
-    <li>Using <a href="http://coinsecrets.org/">coinsecret</a> and <a href="https://blockr.io/">blockr</a> API</li>
-    <li>Made by <a href="https://twitter.com/RCasatta">@RCasatta</a></li>
-
-</ul>
-<div id="total_div" style="width: 100%; height: 500px;"></div>
-<div id="proto_div" style="width: 100%; height: 1000px;"></div>
-<div id="cumulative_div" style="width: 100%; height: 500px;"></div>
-<div id="week_div" style="width: 100%; height: 500px;"></div>
-
-<ul>
-    <li><a href="http://coinspark.org/">Coinspark</a></li>
-    <li><a href="https://www.coinprism.com/">Open Assets</a></li>
-    <li><a href="https://bitproof.io/">Bitproof</a></li>
-    <li><a href="http://www.proofofexistence.com/">Docproof</a></li>
-    <li><a href="http://eternitywall.it">Eternity Wall</a></li>
-    <li><a href="http://factom.org/">Factom</a></li>
-    <li><a href="http://colu.co/">Colu</a></li>
-    <li><a href="http://monegraph.com/">Monegraph</a></li>
-    <li><a href="https://onename.com/">Onename</a> (first blockchain ID implementor)</li>
-    <li>Many protocols like <a href="http://counterparty.io/">Counterparty</a> are not using op_return only to encode data, so they may not be present in this charts but actually used.</li>
-    <li>Tweet to <a href="https://twitter.com/RCasatta">@RCasatta</a> or insert an <a href="https://github.com/RCasatta/op_return/issues">issue</a> on the github project to report protocol not present here</li>
-</ul>
-
+  <header class="navbar navbar-fixed-top navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="#" class="navbar-brand">OP_RETURN Stats</a>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        Note: This site shows statistics on the usage of the OP_RETURN opcode in the Bitcoin scripting language. Stats are compiled by analyzing the first 3 bytes inside each OP_RETURN field and comparing them against known byte prefixes used by each protocol.
+      </div>
+    </div>
+    <div>
+      <h3>Total Transations Over Time</h3>
+      <div id="total_div" style="width: 100%; height: 500px;"></div>
+      <h3>Transations Over Time, Broken Down by Protocol</h3>
+      <div id="proto_div" style="width: 100%; height: 1000px;"></div>
+      <h3>% of Transations by Each Protocol</h3>
+      <div id="cumulative_div" style="width: 100%; height: 500px;"></div>
+      <h3>% of Last Week's Transations by Each Protocol</h3>
+      <div id="week_div" style="width: 100%; height: 500px;"></div>
+    </div>
+    <h3>Apps Using OP_RETURN</h3>
+    <ul class="list-group">
+      <a class="list-group-item" target="_blank" href="http://coinspark.org/">Coinspark</a>
+      <a class="list-group-item" target="_blank" href="https://www.coinprism.com/">Open Assets</a>
+      <a class="list-group-item" target="_blank" href="https://bitproof.io/">Bitproof</a>
+      <a class="list-group-item" target="_blank" href="http://www.proofofexistence.com/">Docproof</a>
+      <a class="list-group-item" target="_blank" href="http://eternitywall.it">Eternity Wall</a>
+      <a class="list-group-item" target="_blank" href="http://factom.org/">Factom</a>
+      <a class="list-group-item" target="_blank" href="http://colu.co/">Colu</a>
+      <a class="list-group-item" target="_blank" href="http://monegraph.com/">Monegraph</a>
+      <a class="list-group-item" target="_blank" href="https://onename.com/">
+        <h4 class="list-group-item-heading">Onename</h4>
+        <p class="list-group-item-text">(the first implementor of the blockchain ID protocol)</p>
+      </a>
+    </ul>
+    <p>
+      Note: Many protocols like <a href="http://counterparty.io/">Counterparty</a> are not only using OP_RETURN only to encode data, so they may not be present in these charts.
+    </p>
+  </div>
+  <footer class="bs-docs-footer navbar-fixed-bottom">
+    <div class="container">
+      <ul class="bs-docs-footer-links">
+        <li>
+          Created by <a href="https://twitter.com/RCasatta">@RCasatta</a>. Built with <a href="http://coinsecrets.org/">coinsecrets.org</a> and <a href="https://blockr.io/">blockr.io</a>. To suggest changes, create an issue on <a href="https://github.com/RCasatta/op_return">GitHub</a>.</li>
+      </ul>
+    </div>
+  </footer>
 </body>
 </html>
