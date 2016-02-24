@@ -55,7 +55,7 @@
     // Create our data table out of JSON data loaded from server.
     var data = new google.visualization.DataTable(json.total);
     var options = {
-      title: 'Total transactions with OP_RETURN ',
+
       vAxis: {logScale: true, minValue: 0}
     };
     var chart = new google.visualization.AreaChart(document.getElementById('total_div'));
@@ -65,9 +65,12 @@
     // Create our data table out of JSON data loaded from server.
     var data2 = new google.visualization.DataTable(json.proto);
     var options2 = {
-      title: 'Most used protocols',
-      subtitle: 'Showing protocols with more than 500 txs',
-      vAxis: {logScale: true, minValue: 0}
+      isStacked: 'relative',
+      vAxis: {
+            minValue: 0,
+            ticks: [0, .25, .5, .75, 1]
+          }
+
     };
     var chart2 = new google.visualization.AreaChart(document.getElementById('proto_div'));
     chart2.draw(data2, options2);
@@ -76,8 +79,7 @@
     // Create our data table out of JSON data loaded from server.
     var data5 = new google.visualization.DataTable(json.cumulative);
     var options5 = {
-      title: 'By protocol cumulative',
-      subtitle: 'Showing protocols with more than 100 txs',
+
       vAxis: {minValue: 0}
     };
     var chart5 = new google.visualization.PieChart(document.getElementById('cumulative_div'));
@@ -87,8 +89,7 @@
     // Create our data table out of JSON data loaded from server.
     var data6 = new google.visualization.DataTable(json.week);
     var options6 = {
-      title: 'By protocol last week',
-      subtitle: 'Showing protocols with more than 10 txs',
+
       vAxis: {minValue: 0}
     };
     var chart6 = new google.visualization.PieChart(document.getElementById('week_div'));
@@ -123,7 +124,7 @@ ga('send', 'pageview');
       <h3>Total Transations Over Time</h3>
       <div id="total_div" style="width: 100%; height: 500px;"></div>
       <h3>Transations Over Time, Broken Down by Protocol</h3>
-      <div id="proto_div" style="width: 100%; height: 1000px;"></div>
+      <div id="proto_div" style="width: 100%; height: 700px;"></div>
       <h3>% of Transations by Each Protocol</h3>
       <div id="cumulative_div" style="width: 100%; height: 500px;"></div>
       <h3>% of Last Week's Transations by Each Protocol</h3>

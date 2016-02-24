@@ -56,6 +56,7 @@ public class StatsToJSONDataTable extends HttpServlet {
 
         hexGrouping.put("4d47ff", "4d4700");  // MG? -> MG?
         hexGrouping.put("455741", "455720");  // EWA -> EW
+        hexGrouping.put("455743", "455720");  // EWC -> EW
         hexGrouping.put("466100", "464143");  // Fa? -> FAC
         hexGrouping.put("69642b", "69643b");  // id+ -> id;
         hexGrouping.put("69643a", "69643b");  // id: -> id;
@@ -144,16 +145,13 @@ public class StatsToJSONDataTable extends HttpServlet {
                 }
                 total.put("rows", totalRows);
 
-
-
-
-                    final Map<String, Integer> moreThanXCounters = new HashMap<>();
+                final Map<String, Integer> moreThanXCounters = new HashMap<>();
                 final Map<String, Integer> moreThanYCounters = new HashMap<>();
 
                 for (Map.Entry<String, Integer> entry : counters.entrySet()) {
-                    if (entry.getValue() > 1200)
+                    if (entry.getValue() > 2000)
                         moreThanXCounters.put(entry.getKey(), entry.getValue());
-                    if (entry.getValue() > 1000)
+                    if (entry.getValue() > 2000)
                         moreThanYCounters.put(entry.getKey(), entry.getValue());
                 }
 
