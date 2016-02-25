@@ -26,6 +26,7 @@ dependencies {
     compile 'javax.servlet:servlet-api:2.5'
     compile 'com.google.appengine:appengine-endpoints:1.9.18'
     compile 'com.google.appengine:appengine-endpoints-deps:1.9.18'
+    compile 'com.google.appengine.tools:appengine-gcs-client:0.4.4'
     compile 'com.googlecode.objectify:objectify:5.1.5'
     compile 'org.json:json:20090211';
 }

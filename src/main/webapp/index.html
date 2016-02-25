@@ -46,7 +46,7 @@
 
   function drawChart() {
     var jsonData = $.ajax({
-      url: "/v1/coinsecret/stats",
+      url: "https://storage.googleapis.com/opreturn-976.appspot.com/op_return_stats.json",
       dataType:"json",
       async: false
       }).responseText;

@@ -11,10 +11,14 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -99,6 +103,9 @@ public class StatsToJSONDataTable extends HttpServlet {
                 final Map<String, Integer> counters = new HashMap<>();
                 final Map<String, Integer> lastWeekCounters = new HashMap<>();
 
+                final Map<String, Map<String,Integer>> monthGrouped = new HashMap<>();
+                final Set<String> months=new HashSet<>();
+
                 int size=coinSecretGroupedList.size();
                 int lastWeek=size-7;
                 log.info("total CoinSecretGrouped " + size);
@@ -138,6 +145,20 @@ public class StatsToJSONDataTable extends HttpServlet {
                                 int countW = lastWeekCounters.containsKey(groupedHex) ? lastWeekCounters.get(groupedHex) : 0;
                                 lastWeekCounters.put(groupedHex, countW + anInt);
                             }
+
+                            final String key = year + month;
+                            months.add(key);
+                            Map<String, Integer> stringIntegerMap = monthGrouped.get(key);
+                            if(stringIntegerMap==null) {
+                                stringIntegerMap=new HashMap<>();
+                                monthGrouped.put(key,stringIntegerMap);
+                            }
+                            final Integer integer = stringIntegerMap.get(groupedHex);
+                            if(integer==null) {
+                                stringIntegerMap.put(groupedHex,count);
+                            } else {
+                                stringIntegerMap.put(groupedHex,integer+count);
+                            }
                         }
 
                     }
@@ -175,9 +196,11 @@ public class StatsToJSONDataTable extends HttpServlet {
                 byProtoCol0.put("label", "date");
                 byProtoCol0.put("type", "date");
                 byProtoCols.put(byProtoCol0);
+                List<String> moreThanXCountersHex=new LinkedList<>();
                 for (Map.Entry<String, Integer> entry : moreThanXCounters.entrySet()) {
                     JSONObject byProtoColX = new JSONObject();
                     final String o = entry.getKey();
+                    moreThanXCountersHex.add(o);
                     byProtoColX.put("id", o);
                     byProtoColX.put("label", hexKeyToDesc(o));
                     byProtoColX.put("type", "number");
@@ -190,6 +213,30 @@ public class StatsToJSONDataTable extends HttpServlet {
             byProtoColLast.put("type", "number");
             byProtoCols.put(byProtoColLast);
             */
+                byProto.put("cols", byProtoCols);
+                List<String> monthsList=new LinkedList<>(months);
+                Collections.sort(monthsList);
+                for (String yearmonth : monthsList) {
+                    String year = yearmonth.substring(0, 4);
+                    String month = yearmonth.substring(4, 6);
+                    String jDate = String.format("Date(%s,%d,1)", year, Integer.parseInt(month) - 1);
+                    JSONObject currC = new JSONObject();
+                    JSONArray currCArr = new JSONArray();
+                    currC.put("c", currCArr);
+                    JSONObject currV0 = new JSONObject();
+                    currV0.put("v", jDate);
+                    currCArr.put(currV0);
+                    final Map<String, Integer> stringIntegerMap = monthGrouped.get(yearmonth);
+                    for (String s : moreThanXCountersHex) {
+                        final Integer integer = stringIntegerMap.get(s);
+                        JSONObject currV1 = new JSONObject();
+                        currV1.put("v", integer);
+                        currCArr.put(currV1);
+                    }
+                    byProtoRows.put(currC);
+
+                }
+                 /*
                 byProto.put("cols", byProtoCols);
                 for (CoinSecretGrouped coinSecretGrouped : coinSecretGroupedList) {
                     String data = coinSecretGrouped.getDay();
@@ -216,7 +263,7 @@ public class StatsToJSONDataTable extends HttpServlet {
                         }
                     }
                     byProtoRows.put(currC);
-                }
+                }*/
 
                 byProto.put("rows", byProtoRows);
 
@@ -297,7 +344,7 @@ public class StatsToJSONDataTable extends HttpServlet {
             } else {
                 result = cached.toString();
             }
-
+            GCSService.writeJson("op_return_stats.json",result);
             resp.setContentType("application/json");
             resp.getWriter().write(result);
 
