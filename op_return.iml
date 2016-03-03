@@ -6,6 +6,12 @@
         <option name="GRADLE_PROJECT_PATH" value=":op_return" />
       </configuration>
     </facet>
+    <facet type="java-gradle" name="Java-Gradle">
+      <configuration>
+        <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" />
+        <option name="BUILDABLE" value="true" />
+      </configuration>
+    </facet>
     <facet type="app-engine-gradle" name="App Engine Gradle">
       <configuration>
         <option name="HTTP_ADDRESS" value="localhost" />
@@ -13,12 +19,6 @@
         <option name="WAR_DIR" value="$MODULE_DIR$/build/exploded-app" />
         <option name="WEB_APP_DIR" value="$MODULE_DIR$/src/main/webapp" />
         <option name="APPENGINE_SDKROOT" value="$USER_HOME$/.gradle/appengine-sdk/appengine-java-sdk-1.9.18" />
-      </configuration>
-    </facet>
-    <facet type="java-gradle" name="Java-Gradle">
-      <configuration>
-        <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" />
-        <option name="BUILDABLE" value="true" />
       </configuration>
     </facet>
   </component>
