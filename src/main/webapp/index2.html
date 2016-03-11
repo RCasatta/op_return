@@ -65,10 +65,9 @@
     // Create our data table out of JSON data loaded from server.
     var data2 = new google.visualization.DataTable(json.proto);
     var options2 = {
-      isStacked: 'relative',
+      isStacked: 'true',
       vAxis: {
-            minValue: 0,
-            ticks: [0, .25, .5, .75, 1]
+            minValue: 0
           }
 
     };
@@ -132,18 +131,18 @@ ga('send', 'pageview');
     </div>
     <h3>Apps Using OP_RETURN</h3>
     <ul class="list-group">
-      <a class="list-group-item" target="_blank" href="https://bitproof.io/"><h4 class="list-group-item-heading">Bitproof</h4></a>
-      <a class="list-group-item" target="_blank" href="http://coinspark.org/"><h4 class="list-group-item-heading">Coinspark</h4></a>
-      <a class="list-group-item" target="_blank" href="http://colu.co/"><h4 class="list-group-item-heading">Colu</h4></a>
-      <a class="list-group-item" target="_blank" href="http://www.proofofexistence.com/"><h4 class="list-group-item-heading">Docproof</h4></a>
-      <a class="list-group-item" target="_blank" href="http://eternitywall.it"><h4 class="list-group-item-heading">Eternity Wall</h4></a>
-      <a class="list-group-item" target="_blank" href="http://factom.org/"><h4 class="list-group-item-heading">Factom</h4></a>
-      <a class="list-group-item" target="_blank" href="http://monegraph.com/"><h4 class="list-group-item-heading">Monegraph</h4></a>
+      <a class="list-group-item" target="_blank" href="https://bitproof.io/">Bitproof</a>
+      <a class="list-group-item" target="_blank" href="http://coinspark.org/">Coinspark</a>
+      <a class="list-group-item" target="_blank" href="http://colu.co/">Colu</a>
+      <a class="list-group-item" target="_blank" href="http://www.proofofexistence.com/">Docproof</a>
+      <a class="list-group-item" target="_blank" href="http://eternitywall.it">Eternity Wall</a>
+      <a class="list-group-item" target="_blank" href="http://factom.org/">Factom</a>
+      <a class="list-group-item" target="_blank" href="http://monegraph.com/">Monegraph</a>
       <a class="list-group-item" target="_blank" href="https://onename.com/">
         <h4 class="list-group-item-heading">Onename</h4>
         <p class="list-group-item-text">(built on Blockstack)</p>
       </a>
-      <a class="list-group-item" target="_blank" href="https://www.coinprism.com/"><h4 class="list-group-item-heading">Open Assets</h4></a>
+      <a class="list-group-item" target="_blank" href="https://www.coinprism.com/">Open Assets</a>
     </ul>
     <p>
       Note: Many protocols like <a href="http://counterparty.io/">Counterparty</a> are not only using OP_RETURN only to encode data, so they may not be present in these charts.
