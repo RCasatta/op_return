@@ -57,6 +57,9 @@ public class StatsToJSONDataTable extends HttpServlet {
         map.put(new String(fromHex("4d4700")), "Monegraph");
         map.put("id;", "Blockstack");  //69643b
         map.put("CNT", "Counterparty");
+        map.put("omn", "Omni Layer");
+        map.put(new String(fromHex("53311b")) , "Stampery");
+
 
         hexGrouping.put("4d47ff", "4d4700");  // MG? -> MG?
         hexGrouping.put("455741", "455720");  // EWA -> EW
