@@ -354,8 +354,16 @@ public class StatsToJSONDataTable extends HttpServlet {
         } catch (JSONException e) {
             log.warning(e + " " + e.getMessage());
         }
+    }
 
-
+    private boolean isPrintable(String s) {
+        System.out.println();
+        for(int i=0;i<s.length();i+=2) {
+            char c = s.charAt(i);
+            if(c=='0' || c=='1' || c=='8' || c=='9' || c=='a' || c=='b' || c=='c' || c=='d' || c=='e' )
+                return false;
+        }
+        return true;
     }
 
 
@@ -363,8 +371,12 @@ public class StatsToJSONDataTable extends HttpServlet {
         final String val = new String(fromHex(key));
         if(map.containsKey(val))
             return map.get(val);
-        else
-            return val;
+        else {
+            if(isPrintable(key))
+                return val ;  //val + " 0x" +key
+            else
+                return "0x" +key;
+        }
 
     }
 
