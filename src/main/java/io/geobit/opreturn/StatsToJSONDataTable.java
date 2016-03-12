@@ -58,7 +58,7 @@ public class StatsToJSONDataTable extends HttpServlet {
         map.put("id;", "Blockstack");  //69643b
         map.put("CNT", "Counterparty");
         map.put("omn", "Omni Layer");
-        //map.put(new String(fromHex("53311b")) , "Stampery"); //this is not stampery
+        map.put(new String(fromHex("533400")) , "Stampery"); //this is not stampery
 
 
         hexGrouping.put("4d47ff", "4d4700");  // MG? -> MG?
@@ -70,8 +70,22 @@ public class StatsToJSONDataTable extends HttpServlet {
         hexGrouping.put("69643f", "69643b");  // id? -> id;
         hexGrouping.put("69643e", "69643b");  // id> -> id;
 
+        putAllCombination(hexGrouping, "5334", "533400");
+
 
     }
+
+    private void putAllCombination(Map<String, String> hexGrouping, String key, String mapTo) {
+        for(int i=0;i<16*16;i++) {
+            final String x = Integer.toHexString(i);
+            final String y = x.length()<2 ? "0" + x : x;
+            final String value = key + y;
+            if(!key.equals(value)) {
+                hexGrouping.put(value, mapTo);
+            }
+        }
+    }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -158,9 +172,9 @@ public class StatsToJSONDataTable extends HttpServlet {
                             }
                             final Integer integer = stringIntegerMap.get(groupedHex);
                             if(integer==null) {
-                                stringIntegerMap.put(groupedHex,count);
+                                stringIntegerMap.put(groupedHex,anInt);
                             } else {
-                                stringIntegerMap.put(groupedHex,integer+count);
+                                stringIntegerMap.put(groupedHex,integer+anInt);
                             }
                         }
 
