@@ -37,6 +37,7 @@ public class StatsToJSONDataTable extends HttpServlet {
     private final static Map<String,String> hexGrouping= new HashMap<>();
     private MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
     private final static SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
+    private final static Map<String,String> colorMap= new HashMap<>();
 
     @Override
     public void init() throws ServletException {
@@ -52,7 +53,7 @@ public class StatsToJSONDataTable extends HttpServlet {
         map.put("SPK", "Coinspark");
         map.put(new String(fromHex("4f4101")) , "Open Assets");
         map.put(new String(fromHex("434301")) , "Colu");
-        map.put("ASC", "Ascribe pool");
+        map.put("ASC", "Ascribe pool");  //415343
         map.put("EW ", "Eternity Wall");  //455720
         map.put(new String(fromHex("4d4700")), "Monegraph");
         map.put("id;", "Blockstack");  //69643b
@@ -71,6 +72,20 @@ public class StatsToJSONDataTable extends HttpServlet {
         hexGrouping.put("69643e", "69643b");  // id> -> id;
 
         putAllCombination(hexGrouping, "5334", "533400");
+
+        colorMap.put("455720", "#0089F3");  //Eternity Wall
+        colorMap.put("69643b", "#831CA8");  //Blockstack
+        colorMap.put("4d4700", "#a82991");  //Monegraph
+        colorMap.put("464143", "#fc6b22");  //Factom
+        colorMap.put("415343", "#67C4DA");  //Ascribe
+        colorMap.put("4f4101", "#FF0000");  //Open Assets
+        colorMap.put("434301", "#00FF00");  //Colu
+        colorMap.put("53504b", "#0000FF");  //Coinspark
+        colorMap.put("353033", "#00FFFF");  //503
+
+
+
+
 
 
     }
@@ -107,6 +122,7 @@ public class StatsToJSONDataTable extends HttpServlet {
                 JSONArray totalRows = new JSONArray();
                 JSONObject totalCol0 = new JSONObject();
                 JSONObject totalCol1 = new JSONObject();
+                JSONArray cumulativeColors = new JSONArray();
                 totalCol0.put("id", "x");
                 totalCol1.put("id", "A");
                 totalCol0.put("label", "date");
@@ -208,6 +224,7 @@ public class StatsToJSONDataTable extends HttpServlet {
                 JSONObject byProto = new JSONObject();
                 JSONArray byProtoCols = new JSONArray();
                 JSONArray byProtoRows = new JSONArray();
+                JSONArray byProtoColors = new JSONArray();
                 JSONObject byProtoCol0 = new JSONObject();
                 byProtoCol0.put("id", "x");
                 byProtoCol0.put("label", "date");
@@ -252,6 +269,9 @@ public class StatsToJSONDataTable extends HttpServlet {
                     }
                     byProtoRows.put(currC);
 
+                }
+                for (String s : moreThanXCountersHex) {
+                    byProtoColors.put(colorOf(s));
                 }
                  /*
                 byProto.put("cols", byProtoCols);
@@ -313,6 +333,7 @@ public class StatsToJSONDataTable extends HttpServlet {
                     cumulativeCArr.put(cumulativeV1);
                     cumulativeC.put("c", cumulativeCArr);
                     cumulativeRows.put(cumulativeC);
+                    cumulativeColors.put(colorOf(key));
                 }
                 cumulative.put("rows", cumulativeRows);
 
@@ -320,6 +341,7 @@ public class StatsToJSONDataTable extends HttpServlet {
                 JSONObject week = new JSONObject();
                 JSONArray weekCols = new JSONArray();
                 JSONArray weekRows = new JSONArray();
+                JSONArray weekColors = new JSONArray();
                 JSONObject weekCol0 = new JSONObject();
                 JSONObject weekCol1 = new JSONObject();
                 weekCol0.put("id", "x");
@@ -337,21 +359,26 @@ public class StatsToJSONDataTable extends HttpServlet {
                     JSONObject weekV0 = new JSONObject();
                     JSONObject weekV1 = new JSONObject();
 
-                    weekV0.put("v", hexKeyToDesc(entry.getKey()));
+                    final String key = entry.getKey();
+                    weekV0.put("v", hexKeyToDesc(key));
                     weekV1.put("v", entry.getValue());
                     weekCArr.put(weekV0);
                     weekCArr.put(weekV1);
                     weekC.put("c", weekCArr);
                     weekRows.put(weekC);
+                    weekColors.put(colorOf(key));
                 }
                 week.put("rows", weekRows);
 
 
                 dataTable.put("total", total);
                 dataTable.put("cumulative", cumulative);
+                dataTable.put("cumulativeColors", cumulativeColors);
                 dataTable.put("proto", byProto);
+                dataTable.put("protoColors", byProtoColors);
                 //dataTable.put("counters", new JSONObject(moreThanXCounters));
                 dataTable.put("week", week);
+                dataTable.put("weekColors", weekColors);
 
 
 
@@ -368,6 +395,14 @@ public class StatsToJSONDataTable extends HttpServlet {
         } catch (JSONException e) {
             log.warning(e + " " + e.getMessage());
         }
+    }
+
+    private String colorOf(String s) {
+        final String s1 = colorMap.get(s);
+        if(s1==null)
+            return "#"+s;
+        else
+            return s1;
     }
 
     private boolean isPrintable(String s) {

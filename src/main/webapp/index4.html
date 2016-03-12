@@ -66,6 +66,7 @@
     var data2 = new google.visualization.DataTable(json.proto);
     var options2 = {
       isStacked: 'true',
+      colors: json.protoColors,
       vAxis: {
             minValue: 0
           }
@@ -90,7 +91,8 @@
     var data6 = new google.visualization.DataTable(json.week);
     var options6 = {
 
-      vAxis: {minValue: 0}
+      vAxis: {minValue: 0},
+      colors: json.weekColors
     };
     var chart6 = new google.visualization.PieChart(document.getElementById('week_div'));
     chart6.draw(data6, options6);
