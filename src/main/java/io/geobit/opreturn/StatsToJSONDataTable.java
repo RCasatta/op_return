@@ -58,7 +58,7 @@ public class StatsToJSONDataTable extends HttpServlet {
         map.put("id;", "Blockstack");  //69643b
         map.put("CNT", "Counterparty");
         map.put("omn", "Omni Layer");
-        map.put(new String(fromHex("53311b")) , "Stampery");
+        //map.put(new String(fromHex("53311b")) , "Stampery"); //this is not stampery
 
 
         hexGrouping.put("4d47ff", "4d4700");  // MG? -> MG?
@@ -360,7 +360,7 @@ public class StatsToJSONDataTable extends HttpServlet {
         System.out.println();
         for(int i=0;i<s.length();i+=2) {
             char c = s.charAt(i);
-            if(c=='0' || c=='1' || c=='8' || c=='9' || c=='a' || c=='b' || c=='c' || c=='d' || c=='e' )
+            if(c=='0' || c=='1' || c=='8' || c=='9' || c=='a' || c=='b' || c=='c' || c=='d' || c=='e' || c=='f' )
                 return false;
         }
         return true;
@@ -372,10 +372,13 @@ public class StatsToJSONDataTable extends HttpServlet {
         if(map.containsKey(val))
             return map.get(val);
         else {
+            final String s = "(" + key + ")";
             if(isPrintable(key))
-                return val ;  //val + " 0x" +key
-            else
-                return "0x" +key;
+                return val;
+            else {
+
+                return s;
+            }
         }
 
     }
