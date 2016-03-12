@@ -372,12 +372,10 @@ public class StatsToJSONDataTable extends HttpServlet {
         if(map.containsKey(val))
             return map.get(val);
         else {
-            final String s = "(" + key + ")";
             if(isPrintable(key))
                 return val;
             else {
-
-                return s;
+                return "0x" + key;
             }
         }
 
