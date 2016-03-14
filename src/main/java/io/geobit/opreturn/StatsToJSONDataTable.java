@@ -73,20 +73,14 @@ public class StatsToJSONDataTable extends HttpServlet {
 
         putAllCombination(hexGrouping, "5334", "533400");
 
+        /*
         colorMap.put("455720", "#0089F3");  //Eternity Wall
         colorMap.put("69643b", "#831CA8");  //Blockstack
         colorMap.put("4d4700", "#a82991");  //Monegraph
         colorMap.put("464143", "#fc6b22");  //Factom
         colorMap.put("415343", "#67C4DA");  //Ascribe
-        colorMap.put("4f4101", "#FF0000");  //Open Assets
-        colorMap.put("434301", "#00FF00");  //Colu
-        colorMap.put("53504b", "#0000FF");  //Coinspark
-        colorMap.put("353033", "#00FFFF");  //503
-
-
-
-
-
+        colorMap.put("4f4101", "#DC3912");  //Open Assets
+        */
 
     }
 
@@ -397,10 +391,21 @@ public class StatsToJSONDataTable extends HttpServlet {
         }
     }
 
+    //Google chart colors http://there4.io/2012/05/02/google-chart-color-list/
+    private static String defaultColors[]= {"#3366CC","#FF9900","#109618","#990099","#3B3EAC","#0099C6","#DD4477","#66AA00","#B82E2E","#316395","#994499","#22AA99","#AAAA11","#6633CC","#E67300","#8B0707","#329262","#5574A6","#3B3EAC"};
+    private static int currDefaultColor=0;
     private String colorOf(String s) {
         final String s1 = colorMap.get(s);
-        if(s1==null)
-            return "#"+s;
+        if(s1==null) {
+            if(currDefaultColor<defaultColors.length-1) {
+                final String defaultColor = defaultColors[currDefaultColor];
+                colorMap.put(s, defaultColor);
+                currDefaultColor++;
+                return defaultColor;
+            }
+
+            return "#" + s;
+        }
         else
             return s1;
     }
