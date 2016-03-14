@@ -73,9 +73,11 @@ public class StatsToJSONDataTable extends HttpServlet {
 
         putAllCombination(hexGrouping, "5334", "533400");
 
-        /*
+
         colorMap.put("455720", "#0089F3");  //Eternity Wall
         colorMap.put("69643b", "#53206f");  //Blockstack
+
+        /*
         colorMap.put("4d4700", "#a82991");  //Monegraph
         colorMap.put("464143", "#fc6b22");  //Factom
         colorMap.put("415343", "#67C4DA");  //Ascribe
