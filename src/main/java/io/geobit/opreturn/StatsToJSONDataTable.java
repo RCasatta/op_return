@@ -70,6 +70,7 @@ public class StatsToJSONDataTable extends HttpServlet {
         hexGrouping.put("69643a", "69643b");  // id: -> id;
         hexGrouping.put("69643f", "69643b");  // id? -> id;
         hexGrouping.put("69643e", "69643b");  // id> -> id;
+        hexGrouping.put("434302", "434301");  // CC2 -> CC1
 
         putAllCombination(hexGrouping, "5334", "533400");
 
@@ -83,6 +84,8 @@ public class StatsToJSONDataTable extends HttpServlet {
         colorMap.put("415343", "#67C4DA");  //Ascribe
         colorMap.put("4f4101", "#DC3912");  //Open Assets
         */
+
+        //0x4f 0x43 <transaction count (8 bytes)> <cumulative hash (32 bytes)>
 
     }
 
