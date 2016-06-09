@@ -59,7 +59,8 @@ public class StatsToJSONDataTable extends HttpServlet {
         map.put("id;", "Blockstack");  //69643b
         map.put("CNT", "Counterparty");
         map.put("omn", "Omni Layer");
-        map.put(new String(fromHex("533400")) , "Stampery"); //this is not stampery
+        map.put(new String(fromHex("533400")) , "Stampery Old"); //this is not stampery
+        map.put(new String(fromHex("533500")) , "Stampery 5"); //this is not stampery
 
 
         hexGrouping.put("4d47ff", "4d4700");  // MG? -> MG?
@@ -73,6 +74,7 @@ public class StatsToJSONDataTable extends HttpServlet {
         hexGrouping.put("434302", "434301");  // CC2 -> CC1
 
         putAllCombination(hexGrouping, "5334", "533400");
+        putAllCombination(hexGrouping, "5335", "533500");
 
 
         colorMap.put("455720", "#0089F3");  //Eternity Wall
