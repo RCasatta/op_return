@@ -37,6 +37,7 @@ public class StatsToJSONDataTable extends HttpServlet {
     private final static Map<String,String> hexGrouping= new HashMap<>();
     private MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
     private final static SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
+    private final static SimpleDateFormat monthFormat = new SimpleDateFormat("yyyyMM");
     private final static Map<String,String> colorMap= new HashMap<>();
 
     @Override
@@ -79,6 +80,7 @@ public class StatsToJSONDataTable extends HttpServlet {
 
         colorMap.put("455720", "#0089F3");  //Eternity Wall
         colorMap.put("69643b", "#53206f");  //Blockstack
+        colorMap.put("434301", "#44DAB4");  //Colu
 
         /*
         colorMap.put("4d4700", "#a82991");  //Monegraph
@@ -109,8 +111,11 @@ public class StatsToJSONDataTable extends HttpServlet {
         try {
 
             final Calendar cal = Calendar.getInstance();
+            final String currentMonth = monthFormat.format(cal.getTime());
+            log.info("currentMonth:" + currentMonth);
             cal.add(Calendar.HOUR, -24);
             final String dayKey = "statsOf" + dayFormat.format(cal.getTime());
+
             String result;
             final Object cached = memcache.get(dayKey);
 
@@ -204,9 +209,9 @@ public class StatsToJSONDataTable extends HttpServlet {
                 final Map<String, Integer> moreThanYCounters = new HashMap<>();
 
                 for (Map.Entry<String, Integer> entry : counters.entrySet()) {
-                    if (entry.getValue() > 2000)
+                    if (entry.getValue() > 3000)
                         moreThanXCounters.put(entry.getKey(), entry.getValue());
-                    if (entry.getValue() > 2000)
+                    if (entry.getValue() > 3000)
                         moreThanYCounters.put(entry.getKey(), entry.getValue());
                 }
 
@@ -254,21 +259,25 @@ public class StatsToJSONDataTable extends HttpServlet {
                 for (String yearmonth : monthsList) {
                     String year = yearmonth.substring(0, 4);
                     String month = yearmonth.substring(4, 6);
-                    String jDate = String.format("Date(%s,%d,1)", year, Integer.parseInt(month) - 1);
-                    JSONObject currC = new JSONObject();
-                    JSONArray currCArr = new JSONArray();
-                    currC.put("c", currCArr);
-                    JSONObject currV0 = new JSONObject();
-                    currV0.put("v", jDate);
-                    currCArr.put(currV0);
-                    final Map<String, Integer> stringIntegerMap = monthGrouped.get(yearmonth);
-                    for (String s : moreThanXCountersHex) {
-                        final Integer integer = stringIntegerMap.get(s);
-                        JSONObject currV1 = new JSONObject();
-                        currV1.put("v", integer);
-                        currCArr.put(currV1);
+                    if(currentMonth.equals(year + month)) {
+                        log.info("currentMonth, skipping " + currentMonth);
+                    } else {
+                        String jDate = String.format("Date(%s,%d,1)", year, Integer.parseInt(month) - 1);
+                        JSONObject currC = new JSONObject();
+                        JSONArray currCArr = new JSONArray();
+                        currC.put("c", currCArr);
+                        JSONObject currV0 = new JSONObject();
+                        currV0.put("v", jDate);
+                        currCArr.put(currV0);
+                        final Map<String, Integer> stringIntegerMap = monthGrouped.get(yearmonth);
+                        for (String s : moreThanXCountersHex) {
+                            final Integer integer = stringIntegerMap.get(s);
+                            JSONObject currV1 = new JSONObject();
+                            currV1.put("v", integer);
+                            currCArr.put(currV1);
+                        }
+                        byProtoRows.put(currC);
                     }
-                    byProtoRows.put(currC);
 
                 }
                 for (String s : moreThanXCountersHex) {
